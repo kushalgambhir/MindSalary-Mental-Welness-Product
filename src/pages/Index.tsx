@@ -4,52 +4,76 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Brain, Zap, Users, Calendar, TrendingUp, PlayCircle, BookOpen } from "lucide-react";
+import { Heart, Brain, Zap, Users, Calendar, TrendingUp, DollarSign, Trophy, Target, Star } from "lucide-react";
 import DailyCheckIn from "@/components/DailyCheckIn";
 import MoodTracker from "@/components/MoodTracker";
 import QuickActions from "@/components/QuickActions";
 import InsightsPanel from "@/components/InsightsPanel";
+import MindSalaryDashboard from "@/components/MindSalaryDashboard";
+import StealthModeCheckin from "@/components/StealthModeCheckin";
+import SocialProofEngine from "@/components/SocialProofEngine";
+import CompetitiveLeaderboards from "@/components/CompetitiveLeaderboards";
+import EarningsTracker from "@/components/EarningsTracker";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [hasCheckedInToday, setHasCheckedInToday] = useState(false);
   const [currentStreak, setCurrentStreak] = useState(7);
+  const [mindSalaryScore, setMindSalaryScore] = useState(675);
+  const [monthlyEarnings, setMonthlyEarnings] = useState(12500);
   const { toast } = useToast();
 
   const handleCheckInComplete = () => {
     setHasCheckedInToday(true);
     setCurrentStreak(prev => prev + 1);
+    setMindSalaryScore(prev => Math.min(prev + 15, 1000));
     toast({
-      title: "🌟 Check-in complete!",
-      description: "Great job taking care of your mental wellness today.",
+      title: "🎯 MindSalary Score Increased!",
+      description: `+15 points earned! Your score is now ${mindSalaryScore + 15}. Higher scores = Higher earning potential!`,
+    });
+  };
+
+  const handleStealthCheckin = (stressLevel: number, focus: number) => {
+    const points = Math.floor((stressLevel + focus) / 2 * 0.3);
+    setMindSalaryScore(prev => Math.min(prev + points, 1000));
+    const earnings = Math.floor(points * 2.5);
+    setMonthlyEarnings(prev => prev + earnings);
+    
+    toast({
+      title: "🔥 Stress Harvested Successfully!",
+      description: `+${points} MindSalary points, ₹${earnings} resilience earnings unlocked!`,
     });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-50">
+      <header className="bg-white/90 backdrop-blur-sm border-b border-green-100 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <Heart className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center">
+                <DollarSign className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Sukoon
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                  MindSalary
                 </h1>
-                <p className="text-sm text-gray-600">Your mental wellness companion</p>
+                <p className="text-sm text-gray-600">Earn While You Heal - First Mental Wellness Economy</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <Badge variant="secondary" className="bg-green-100 text-green-700">
-                <Zap className="w-4 h-4 mr-1" />
-                {currentStreak} day streak
+                <Trophy className="w-4 h-4 mr-1" />
+                Score: {mindSalaryScore}
+              </Badge>
+              <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                <DollarSign className="w-4 h-4 mr-1" />
+                ₹{monthlyEarnings} earned
               </Badge>
               <Button variant="outline" size="sm">
                 <Users className="w-4 h-4 mr-2" />
-                Community
+                Talent Network
               </Button>
             </div>
           </div>
@@ -60,22 +84,32 @@ const Index = () => {
         {/* Welcome Section */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
-            Welcome back, Professional! 👋
+            Your Mental Health = Your Wealth 💰
           </h2>
           <p className="text-gray-600 text-lg">
-            Take a moment for yourself. How are you feeling today?
+            Transform stress into income. Build resilience, boost your MindSalary Score, unlock premium opportunities.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Daily Check-in */}
+          {/* Left Column - Core Features */}
           <div className="lg:col-span-2 space-y-6">
+            {/* MindSalary Dashboard */}
+            <MindSalaryDashboard 
+              score={mindSalaryScore} 
+              earnings={monthlyEarnings}
+              streak={currentStreak}
+            />
+
+            {/* Stealth Mode Check-in */}
+            <StealthModeCheckin onComplete={handleStealthCheckin} />
+
             {/* Daily Check-in Card */}
-            <Card className="bg-white/70 backdrop-blur-sm border-blue-200 shadow-lg">
+            <Card className="bg-white/70 backdrop-blur-sm border-green-200 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center text-blue-700">
+                <CardTitle className="flex items-center text-green-700">
                   <Brain className="w-6 h-6 mr-2" />
-                  Daily Energy Check-in
+                  Daily Resilience Builder
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -84,78 +118,89 @@ const Index = () => {
                 ) : (
                   <div className="text-center py-8">
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Heart className="w-8 h-8 text-green-600" />
+                      <Star className="w-8 h-8 text-green-600" />
                     </div>
                     <h3 className="text-xl font-semibold text-green-700 mb-2">
-                      Check-in Complete!
+                      Resilience Points Earned!
                     </h3>
                     <p className="text-gray-600">
-                      You've taken a great step towards self-care today.
+                      You're building your professional mental fitness. Higher scores = Higher earning potential!
                     </p>
                   </div>
                 )}
               </CardContent>
             </Card>
 
-            {/* Mood Tracker */}
-            <MoodTracker />
+            {/* Earnings Tracker */}
+            <EarningsTracker monthlyEarnings={monthlyEarnings} />
 
             {/* Quick Actions */}
             <QuickActions />
           </div>
 
-          {/* Right Column - Insights & Stats */}
+          {/* Right Column - Social & Competition */}
           <div className="space-y-6">
+            {/* Competitive Leaderboards */}
+            <CompetitiveLeaderboards userScore={mindSalaryScore} />
+            
+            {/* Social Proof Engine */}
+            <SocialProofEngine userScore={mindSalaryScore} />
+            
             <InsightsPanel currentStreak={currentStreak} />
             
-            {/* Today's Recommendation */}
-            <Card className="bg-gradient-to-br from-purple-100 to-pink-100 border-purple-200">
+            {/* Career Opportunity Alert */}
+            <Card className="bg-gradient-to-br from-green-100 to-blue-100 border-green-200">
               <CardHeader>
-                <CardTitle className="text-purple-700">Today's Recommendation</CardTitle>
+                <CardTitle className="text-green-700">Premium Opportunity Unlocked!</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <PlayCircle className="w-6 h-6 text-purple-600 mt-1" />
+                    <Target className="w-6 h-6 text-green-600 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-purple-800">5-Minute Focus Break</h4>
-                      <p className="text-sm text-purple-600">
-                        Based on your energy levels, try this breathing exercise
+                      <h4 className="font-semibold text-green-800">Senior Consultant Role</h4>
+                      <p className="text-sm text-green-600">
+                        ₹2,50,000 - Only for 650+ MindSalary Score professionals
                       </p>
                     </div>
                   </div>
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                    Start Session
+                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                    Apply Now (Score: {mindSalaryScore})
                   </Button>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Wellness Score */}
+            {/* MindSalary Score Details */}
             <Card className="bg-white/70 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <TrendingUp className="w-5 h-5 mr-2 text-blue-600" />
-                  Wellness Score
+                  <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
+                  MindSalary Score Impact
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between mb-2">
-                      <span className="text-sm font-medium">Overall Wellness</span>
-                      <span className="text-sm font-bold text-blue-600">78%</span>
+                      <span className="text-sm font-medium">Professional Mental Fitness</span>
+                      <span className="text-sm font-bold text-green-600">{mindSalaryScore}/1000</span>
                     </div>
-                    <Progress value={78} className="h-3" />
+                    <Progress value={mindSalaryScore/10} className="h-3" />
+                  </div>
+                  <div className="text-xs text-gray-600 space-y-1">
+                    <div>650+: Premium job access</div>
+                    <div>750+: Executive opportunities</div>
+                    <div>850+: Top 1% earning potential</div>
                   </div>
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div>
-                      <p className="text-2xl font-bold text-green-600">12</p>
-                      <p className="text-xs text-gray-600">Good days this month</p>
+                      <p className="text-2xl font-bold text-green-600">₹{Math.floor(mindSalaryScore * 150)}</p>
+                      <p className="text-xs text-gray-600">Est. monthly premium</p>
                     </div>
                     <div>
-                      <p className="text-2xl font-bold text-blue-600">3</p>
-                      <p className="text-xs text-gray-600">Sessions completed</p>
+                      <p className="text-2xl font-bold text-blue-600">{Math.floor(mindSalaryScore/25)}%</p>
+                      <p className="text-xs text-gray-600">Above market rate</p>
                     </div>
                   </div>
                 </div>
@@ -164,36 +209,36 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Bottom Section - Resources */}
+        {/* Bottom Section - Professional Network */}
         <div className="mt-12">
-          <h3 className="text-2xl font-bold text-gray-800 mb-6">Wellness Resources</h3>
+          <h3 className="text-2xl font-bold text-gray-800 mb-6">Mental Fitness Professional Network</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="bg-white/70 backdrop-blur-sm hover:shadow-lg transition-shadow cursor-pointer">
               <CardContent className="p-6 text-center">
-                <BookOpen className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-                <h4 className="font-semibold mb-2">Workplace Stress Guide</h4>
+                <DollarSign className="w-12 h-12 text-green-600 mx-auto mb-4" />
+                <h4 className="font-semibold mb-2">Talent Marketplace</h4>
                 <p className="text-sm text-gray-600">
-                  Learn techniques to manage stress in Indian corporate culture
+                  Get hired based on your verified mental resilience score
                 </p>
               </CardContent>
             </Card>
             
             <Card className="bg-white/70 backdrop-blur-sm hover:shadow-lg transition-shadow cursor-pointer">
               <CardContent className="p-6 text-center">
-                <Users className="w-12 h-12 text-green-600 mx-auto mb-4" />
-                <h4 className="font-semibold mb-2">Peer Support Groups</h4>
+                <Users className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                <h4 className="font-semibold mb-2">Peer Support Economy</h4>
                 <p className="text-sm text-gray-600">
-                  Connect with professionals facing similar challenges
+                  Earn karma credits by helping other professionals grow
                 </p>
               </CardContent>
             </Card>
             
             <Card className="bg-white/70 backdrop-blur-sm hover:shadow-lg transition-shadow cursor-pointer">
               <CardContent className="p-6 text-center">
-                <Calendar className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-                <h4 className="font-semibold mb-2">Expert Consultations</h4>
+                <Trophy className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                <h4 className="font-semibold mb-2">Mental Fitness Certification</h4>
                 <p className="text-sm text-gray-600">
-                  Book sessions with certified mental health professionals
+                  LinkedIn-verified credentials that boost your professional brand
                 </p>
               </CardContent>
             </Card>
